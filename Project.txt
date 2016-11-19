@@ -1,0 +1,30 @@
+Chess Engine Python
+
+- Ascii representation of board in console
+- Who moves first? (flip coin or choose)
+- User enters move in standard notation
+- Computer decides move
+- Board redrawn with computer move
+- User moves
+- Until checkmate, stalemate, user resignation
+
+Note:
+
+- keep history of previous board positions for 3 move stalemate rule
+- En passant
+- Make computer castle
+- How will computer recognize 3 move stalemate
+- How will computer recognize checkmate
+
+- Write unit tests for every class and method
+- Run tests before merge (git hook?)
+
+- Easy way to make board positions for testing?
+
+
+Steps:
+
+- Board representation
+- Pieces
+- User input, move pieces legally
+- Computer algorithm, User vs Computer
