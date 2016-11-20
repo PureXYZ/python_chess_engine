@@ -51,4 +51,38 @@ class Board:
 
             self.board_rows.append(self.board_row)
 
+    def print_board_debug(self):
+        for row in reversed(self.board_rows):
+            for piece in row:
+                if piece is None:
+                    print("| _ |", end="")
+                elif type(piece) is Pawn and piece.is_white == self.CONST_WHITE:
+                    print("| p |", end="")
+                elif type(piece) is Pawn and piece.is_white == self.CONST_BLACK:
+                    print("| P |", end="")
+                elif type(piece) is Rook and piece.is_white == self.CONST_WHITE:
+                    print("| r |", end="")
+                elif type(piece) is Rook and piece.is_white == self.CONST_BLACK:
+                    print("| R |", end="")
+                elif type(piece) is Knight and piece.is_white == self.CONST_WHITE:
+                    print("| n |", end="")
+                elif type(piece) is Knight and piece.is_white == self.CONST_BLACK:
+                    print("| N |", end="")
+                elif type(piece) is Bishop and piece.is_white == self.CONST_WHITE:
+                    print("| b |", end="")
+                elif type(piece) is Bishop and piece.is_white == self.CONST_BLACK:
+                    print("| B |", end="")
+                elif type(piece) is Queen and piece.is_white == self.CONST_WHITE:
+                    print("| q |", end="")
+                elif type(piece) is Queen and piece.is_white == self.CONST_BLACK:
+                    print("| Q |", end="")
+                elif type(piece) is King and piece.is_white == self.CONST_WHITE:
+                    print("| k |", end="")
+                elif type(piece) is King and piece.is_white == self.CONST_BLACK:
+                    print("| K |", end="")
+            print("\n")
+
+
+
+
 
