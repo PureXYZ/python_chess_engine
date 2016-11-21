@@ -17,6 +17,9 @@ class Board:
 
     def __init__(self):
         #initialize board with starting piece positions
+        self.CONST_WHITE_CASTLED = False
+        self.CONST_BLACK_CASTLED = False
+        
         self.board_rows = []
 
         for row in range(self.CONST_BOARD_ROWS):
@@ -59,31 +62,31 @@ class Board:
         for row in reversed(self.board_rows):
             for piece in row:
                 if piece is None:
-                    print("| _ |", end="")
+                    print("|   |", end="")
                 elif type(piece) is Pawn and piece.is_white == self.CONST_WHITE:
-                    print("| p |", end="")
+                    print("| ♙ |", end="")
                 elif type(piece) is Pawn and piece.is_white == self.CONST_BLACK:
-                    print("| P |", end="")
+                    print("| ♟ |", end="")
                 elif type(piece) is Rook and piece.is_white == self.CONST_WHITE:
-                    print("| r |", end="")
+                    print("| ♖ |", end="")
                 elif type(piece) is Rook and piece.is_white == self.CONST_BLACK:
-                    print("| R |", end="")
+                    print("| ♜ |", end="")
                 elif type(piece) is Knight and piece.is_white == self.CONST_WHITE:
-                    print("| n |", end="")
+                    print("| ♘ |", end="")
                 elif type(piece) is Knight and piece.is_white == self.CONST_BLACK:
-                    print("| N |", end="")
+                    print("| ♞ |", end="")
                 elif type(piece) is Bishop and piece.is_white == self.CONST_WHITE:
-                    print("| b |", end="")
+                    print("| ♗ |", end="")
                 elif type(piece) is Bishop and piece.is_white == self.CONST_BLACK:
-                    print("| B |", end="")
+                    print("| ♝ |", end="")
                 elif type(piece) is Queen and piece.is_white == self.CONST_WHITE:
-                    print("| q |", end="")
+                    print("| ♕ |", end="")
                 elif type(piece) is Queen and piece.is_white == self.CONST_BLACK:
-                    print("| Q |", end="")
+                    print("| ♛ |", end="")
                 elif type(piece) is King and piece.is_white == self.CONST_WHITE:
-                    print("| k |", end="")
+                    print("| ♔ |", end="")
                 elif type(piece) is King and piece.is_white == self.CONST_BLACK:
-                    print("| K |", end="")
+                    print("| ♚ |", end="")
             print("\n")
 
     def is_in_board(self, coord):
@@ -359,17 +362,106 @@ class Board:
                                         or self.board_rows[row - 1][column + 2].is_white != side):
                             move_list.append(((column, row), (column + 2, row - 1)))
                         continue
-                            
-
-
+                        
+                    #king movement
+                    if type(self.board_rows[row][column]) == King:
+                        for i in range(row - 1, row + 2, 1):
+                            for j in range(column - 1, column + 2, 1):
+                                if self.is_in_board((j, i)) and \
+                                        (self.board_rows[i][j] is None or self.board_rows[i][j].is_white != side):
+                                    move_list.append((column, row),(j, i))
+                    
+                    #vertical movement
+                    if type(self.board_rows[row][column]) == Rook or type(self.board_rows[row][column]) == Queen:
+                        for i in range(row + 1, 8, 1):
+                            if self.board_rows[i][column] is None:
+                                move_list.append(((column, row),(column, i)))
+                                continue
+                            elif self.board_rows[i][column].is_white == side:
+                                break
+                            elif self.board_rows[i][column].is_white != side:
+                                move_list.append(((column, row),(column, i)))
+                                break
+                                
+                        for i in range(row - 1, -1, -1):
+                            if self.board_rows[i][column] is None:
+                                move_list.append(((column, row),(column, i)))
+                                continue
+                            elif self.board_rows[i][column].is_white == side:
+                                break
+                            elif self.board_rows[i][column].is_white != side:
+                                move_list.append(((column, row),(column, i)))
+                                break
+                                
+                    #horizontal movement
+                    if type(self.board_rows[row][column]) == Rook or type(self.board_rows[row][column]) == Queen:
+                        for i in range(column + 1, 8, 1):
+                            if self.board_rows[row][i] is None:
+                                move_list.append(((column, row),(i, row)))
+                                continue
+                            elif self.board_rows[row][i].is_white == side:
+                                break
+                            elif self.board_rows[row][i].is_white != side:
+                                move_list.append(((column, row),(i, row)))
+                                break
+                                
+                        for i in range(row - 1, -1, -1):
+                            if self.board_rows[row][i] is None:
+                                move_list.append(((column, row),(i, row)))
+                                continue
+                            elif self.board_rows[row][i].is_white == side:
+                                break
+                            elif self.board_rows[row][i].is_white != side:
+                                move_list.append(((column, row),(i, row)))
+                                break
+                                
+                    #diagonal movement
+                    if type(self.board_rows[row][column]) == Bishop or type(self.board_rows[row][column]) == Queen:
+                        for i, j in zip(range(row + 1, 8, 1), range(column - 1, -1, -1)):
+                            if self.board_rows[i][j] is None:
+                                move_list.append(((column, row), (j, i)))
+                                continue
+                            elif self.board_rows[row][i].is_white == side:
+                                break
+                            elif self.board_rows[row][i].is_white != side:
+                                move_list.append(((column, row), (j, i)))
+                                break
+                                
+                        for i, j in zip(range(row + 1, 8, 1), range(column + 1, 8, 1)):
+                            if self.board_rows[i][j] is None:
+                                move_list.append(((column, row), (j, i)))
+                                continue
+                            elif self.board_rows[row][i].is_white == side:
+                                break
+                            elif self.board_rows[row][i].is_white != side:
+                                move_list.append(((column, row), (j, i)))
+                                break     
+                                
+                        for i, j in zip(range(row - 1, -1, -1), range(column - 1, -1, -1)):
+                            if self.board_rows[i][j] is None:
+                                move_list.append(((column, row), (j, i)))
+                                continue
+                            elif self.board_rows[row][i].is_white == side:
+                                break
+                            elif self.board_rows[row][i].is_white != side:
+                                move_list.append(((column, row), (j, i)))
+                                break    
+                                
+                        for i, j in zip(range(row - 1, -1, -1), range(column + 1, 8, 1)):
+                            if self.board_rows[i][j] is None:
+                                move_list.append(((column, row), (j, i)))
+                                continue
+                            elif self.board_rows[row][i].is_white == side:
+                                break
+                            elif self.board_rows[row][i].is_white != side:
+                                move_list.append(((column, row), (j, i)))
+                                break    
+                        
         return move_list
 
-    def find_legal_moves(self, side):
-        legal_move_list = []
-        return legal_move_list
-
-
-
-
+ 
 x = Board()
-print(x.find_all_moves(False))
+x.move_piece((4,1),(4,3))
+x.print_board_debug()
+print(x.find_all_moves(True))
+
