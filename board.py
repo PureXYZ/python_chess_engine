@@ -316,7 +316,7 @@ class Board:
                                     and self.board_rows[row - 1][column + 1].is_white != side:
                                 move_list.append(((column, row), (column + 1, row - 1)))
 
-                    if type(self.board_rows[row][column]) == Knight:
+                    #if type(self.board_rows[row][column]) == Knight:
 
 
         return move_list
