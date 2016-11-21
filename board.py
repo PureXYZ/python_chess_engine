@@ -315,8 +315,51 @@ class Board:
                                     and self.board_rows[row - 1][column + 1] is not None \
                                     and self.board_rows[row - 1][column + 1].is_white != side:
                                 move_list.append(((column, row), (column + 1, row - 1)))
+                        continue
 
-                    #if type(self.board_rows[row][column]) == Knight:
+                    #knight movement
+                    if type(self.board_rows[row][column]) == Knight:
+                        if self.is_in_board((column - 1, row + 2)) \
+                                and (self.board_rows[row + 2][column - 1] is None \
+                                        or self.board_rows[row + 2][column - 1].is_white != side):
+                            move_list.append(((column, row), (column - 1, row + 2)))
+                            
+                        if self.is_in_board((column + 1, row + 2)) \
+                                and (self.board_rows[row + 2][column + 1] is None \
+                                        or self.board_rows[row + 2][column + 1].is_white != side):
+                            move_list.append(((column, row), (column + 1, row + 2)))
+                            
+                        if self.is_in_board((column - 2, row + 1)) \
+                                and (self.board_rows[row + 1][column - 2] is None \
+                                        or self.board_rows[row + 1][column - 2].is_white != side):
+                            move_list.append(((column, row), (column - 2, row + 1)))
+                            
+                        if self.is_in_board((column + 2, row + 1)) \
+                                and (self.board_rows[row + 1][column + 2] is None \
+                                        or self.board_rows[row + 1][column + 2].is_white != side):
+                            move_list.append(((column, row), (column + 2, row + 1)))
+                            
+                        if self.is_in_board((column - 1, row - 2)) \
+                                and (self.board_rows[row - 2][column - 1] is None \
+                                        or self.board_rows[row - 2][column - 1].is_white != side):
+                            move_list.append(((column, row), (column - 1, row - 2)))
+                            
+                        if self.is_in_board((column + 1, row - 2)) \
+                                and (self.board_rows[row - 2][column + 1] is None \
+                                        or self.board_rows[row - 2][column + 1].is_white != side):
+                            move_list.append(((column, row), (column + 1, row - 2)))
+                            
+                        if self.is_in_board((column - 2, row - 1)) \
+                                and (self.board_rows[row - 1][column - 2] is None \
+                                        or self.board_rows[row - 1][column - 2].is_white != side):
+                            move_list.append(((column, row), (column - 2, row - 1)))
+                            
+                        if self.is_in_board((column + 2, row - 1)) \
+                                and (self.board_rows[row - 1][column + 2] is None \
+                                        or self.board_rows[row - 1][column + 2].is_white != side):
+                            move_list.append(((column, row), (column + 2, row - 1)))
+                        continue
+                            
 
 
         return move_list
