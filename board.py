@@ -245,22 +245,88 @@ class Board:
                 if self.is_in_board((column,row)):
                     if self.board_rows[row][column] is None or self.board_rows[row][column].is_white == side:
                         continue
-                    elif type(self.board_rows[row][column]) == King:
+                    elif type(self.board_rows[row][column]) == King and self.board_rows[row][column].is_white != side:
                         return True
 
         return False
 
-    def find_all_moves(self, side):
-        return
+    def board_with_piece_moved(self, start_coord, end_coord):
+        new_board_rows = self.board_rows
 
-    def find_legal_moves(self, side):
-        return
+        new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]] \
+            = new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]]
+
+        new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
+
+        return new_board_rows
 
     def move_piece(self, start_coord, end_coord):
-        return
+        self.board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]] \
+            = self.board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]]
+
+        self.board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
+
+    def find_all_moves(self, side):
+        move_list = []
+
+        for row in range(self.CONST_BOARD_ROWS):
+            for column in range(self.CONST_BOARD_COLUMNS):
+                #find own pieces
+                if self.board_rows[row][column] is None or self.board_rows[row][column].is_white != side:
+                    continue
+                else:
+                    #pawn movement
+                    if type(self.board_rows[row][column]) == Pawn:
+                        if self.board_rows[row][column].is_white:
+                            if self.is_in_board((column, row + 1)) and self.board_rows[row + 1][column] is None:
+                                move_list.append(((column, row), (column, row + 1)))
+
+                            if self.is_in_board((column, row + 2)) \
+                                    and self.board_rows[row + 2][column] is None\
+                                    and self.board_rows[row + 1][column] is None\
+                                    and self.board_rows[row][column].initial_coord == (column, row):
+                                move_list.append(((column, row), (column, row + 2)))
+
+                            if self.is_in_board((column - 1, row + 1)) \
+                                    and self.board_rows[row + 1][column - 1] is not None \
+                                    and self.board_rows[row + 1][column - 1].is_white != side:
+                                move_list.append(((column, row), (column - 1, row + 1)))
+
+                            if self.is_in_board((column + 1, row + 1)) \
+                                    and self.board_rows[row + 1][column + 1] is not None \
+                                    and self.board_rows[row + 1][column + 1].is_white != side:
+                                move_list.append(((column, row), (column + 1, row + 1)))
+                        else:
+                            if self.is_in_board((column, row - 1)) and self.board_rows[row - 1][column] is None:
+                                move_list.append(((column, row), (column, row - 1)))
+
+                            if self.is_in_board((column, row - 2)) \
+                                    and self.board_rows[row - 2][column] is None\
+                                    and self.board_rows[row - 1][column] is None\
+                                    and self.board_rows[row][column].initial_coord == (column, row):
+                                move_list.append(((column, row), (column, row - 2)))
+
+                            if self.is_in_board((column - 1, row - 1)) \
+                                    and self.board_rows[row - 1][column - 1] is not None \
+                                    and self.board_rows[row - 1][column - 1].is_white != side:
+                                move_list.append(((column, row), (column - 1, row - 1)))
+
+                            if self.is_in_board((column + 1, row - 1)) \
+                                    and self.board_rows[row - 1][column + 1] is not None \
+                                    and self.board_rows[row - 1][column + 1].is_white != side:
+                                move_list.append(((column, row), (column + 1, row - 1)))
+
+                    if type(self.board_rows[row][column]) == Knight:
+
+
+        return move_list
+
+    def find_legal_moves(self, side):
+        legal_move_list = []
+        return legal_move_list
 
 
 
 
-
-
+x = Board()
+print(x.find_all_moves(False))
