@@ -466,7 +466,20 @@ class Board:
     
     
     def evaluate_points(self, side):
-        return 10
+        sum_points = 0
+        for row in range(self.CONST_BOARD_ROWS):
+            for column in range(self.CONST_BOARD_COLUMNS):
+                if self.board_rows[row][column] is None:
+                    continue
+                elif self.board_rows[row][column].is_white == side:
+                    sum_points += self.board_rows[row][column].value
+                elif self.board_rows[row][column].is_white != side:
+                    sum_points -= self.board_rows[row][column].value
+        return sum_points
+    
+    
+    def castle_moves(self, side):
+        return False
     
 
  

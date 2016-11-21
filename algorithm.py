@@ -8,10 +8,6 @@ class Algorithm:
         self.board_history.append((initial_board, False, None))
         self.side_to_move = True
         
-        
-        
-    def castling_move_list(self, move_list, side):
-        return False
     
     def en_passant_move_list(self, move_list, side):
         return False
@@ -45,9 +41,3 @@ class Algorithm:
     def computer_move(self, side):
         return False
     
-a = Algorithm(Board())
-a.make_user_move(True, ((4,1),(4,3)))
-a.board_history[0][0].print_board_debug()
-a.make_user_move(False, ((4,6),(4,4)))
-a.board_history[0][0].print_board_debug()
-a.make_user_move(True, ((4,6),(4,4)))
