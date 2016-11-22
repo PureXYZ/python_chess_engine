@@ -26,9 +26,9 @@ while True:
     if game.board_history[0][0].is_in_check(side_to_move):
         ChessIO().check(side_to_move)
     
-    move = ChessIO().user_input(side_to_move)
+    move = ChessIO().user_input(side_to_move, game.board_history[0][0])
     
-    if move == -1:
+    if move == -1 or move == -2:
         print("Input not recognized, try again")
         continue
          

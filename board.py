@@ -92,7 +92,7 @@ class Board:
                     print("|♚|", end="")
             print(" ", end="")
             print(i)
-        print(" 0  1  2  3  4  5  6  7")
+        print(" a  b  c  d  e  f  g  h")
         print("WHITE")
 
     def is_in_board(self, coord):
@@ -290,6 +290,8 @@ class Board:
                 
             new_board_rows[remove_coord[self.CONST_COORD_ROW]][remove_coord[self.CONST_COORD_COLUMN]] \
                 = None
+                
+            new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
                 
             self.board_rows = new_board_rows
             
@@ -534,6 +536,9 @@ class Board:
         else:
             if self.BLACK_CASTLED:
                 return castle_move_list
+            
+        if self.is_in_check(side):
+            return castle_move_list
         
         king_coord = None
         for row in range(self.CONST_BOARD_ROWS):
