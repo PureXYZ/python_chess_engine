@@ -10,3 +10,4 @@ class Pawn:
 
         self.coord = initial_coord
         self.initial_coord = initial_coord
+        self.moved = False

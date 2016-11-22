@@ -4,6 +4,7 @@ from rook import Rook
 from bishop import Bishop
 from knight import Knight
 from pawn import Pawn
+import copy
 
 
 class Board:
@@ -254,16 +255,6 @@ class Board:
 
         return False
 
-    def board_with_piece_moved(self, start_coord, end_coord):
-        new_board_rows = self.board_rows
-
-        new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]] \
-            = new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]]
-
-        new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
-
-        return new_board_rows
-
     def move_piece(self, start_coord, end_coord):
         new_board_rows = self.board_rows
 
@@ -271,7 +262,12 @@ class Board:
             = new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]]
 
         new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
-        
+
+        if type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == Pawn \
+                or type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == King\
+                or type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == Rook:
+            new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]].moved = True
+
         self.board_rows = new_board_rows
 
     def find_all_moves(self, side):
@@ -463,8 +459,7 @@ class Board:
                                 break    
                         
         return move_list
-    
-    
+
     def evaluate_points(self, side):
         sum_points = 0
         for row in range(self.CONST_BOARD_ROWS):
@@ -480,7 +475,17 @@ class Board:
     
     def castle_moves(self, side):
         return False
-    
 
- 
+    def find_all_legal_moves(self, side, en_passant):
+        all_moves = self.find_all_moves(side)
+        check_free_moves = []
+
+        for move in all_moves:
+            test_check = copy.deepcopy(self)
+            test_check.move_piece(move[0], move[1])
+            if not test_check.is_in_check(side):
+                check_free_moves.append(move)
+
+        return check_free_moves
+    
 

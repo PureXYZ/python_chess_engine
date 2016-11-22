@@ -9,4 +9,4 @@ class Rook:
             self.is_white = False
 
         self.coord = initial_coord
-
+        self.moved = False
