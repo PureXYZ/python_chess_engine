@@ -31,7 +31,7 @@ while True:
     if move == -1:
         print("Input not recognized, try again")
         continue
-        
+         
     move_result = game.make_user_move(side_to_move, move)
     
     if move_result == -1:

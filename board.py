@@ -107,7 +107,7 @@ class Board:
                 if type(self.board_rows[row][column]) == King and self.board_rows[row][column].is_white == side:
                     king_coord = (column, row)
 
-        if king_coord == None:
+        if king_coord is None:
             raise LookupError("King coord not found")
 
         #check rows from king to 0 (vertically)
@@ -260,7 +260,7 @@ class Board:
         return False
 
     def move_piece(self, move):
-        if move[0] != "ep":
+        if move[0] != "ep" and move[0] != "00" and move[0] != "000":
             start_coord = move[0]
             end_coord = move[1]
 
@@ -278,7 +278,7 @@ class Board:
 
             self.board_rows = new_board_rows
             
-        elif move[0] == "ep":
+        if move[0] == "ep":
             start_coord = move[1]
             end_coord = move[2]
             remove_coord = move[3]
@@ -292,6 +292,34 @@ class Board:
                 = None
                 
             self.board_rows = new_board_rows
+            
+        if move[0] == '00' or move[0] == '000':
+            king_start_coord = move[1]
+            king_end_coord = move[2]
+            rook_start_coord = move[3]
+            rook_end_coord = move[4]
+            
+            if self.board_rows[king_start_coord[1]][king_start_coord[0]].is_white:
+                self.WHITE_CASTLED = True
+            else:
+                self.BLACK_CASTLED = True
+            
+            new_board_rows = self.board_rows
+            
+            new_board_rows[king_end_coord[self.CONST_COORD_ROW]][king_end_coord[self.CONST_COORD_COLUMN]] \
+                = new_board_rows[king_start_coord[self.CONST_COORD_ROW]][king_start_coord[self.CONST_COORD_COLUMN]]
+                
+            new_board_rows[rook_end_coord[self.CONST_COORD_ROW]][rook_end_coord[self.CONST_COORD_COLUMN]] \
+                = new_board_rows[rook_start_coord[self.CONST_COORD_ROW]][rook_start_coord[self.CONST_COORD_COLUMN]]
+                
+            new_board_rows[king_start_coord[self.CONST_COORD_ROW]][king_start_coord[self.CONST_COORD_COLUMN]] = None
+            new_board_rows[rook_start_coord[self.CONST_COORD_ROW]][rook_start_coord[self.CONST_COORD_COLUMN]] = None
+                 
+            new_board_rows[rook_end_coord[1]][rook_end_coord[0]].moved = True
+            new_board_rows[king_end_coord[1]][king_end_coord[0]].moved = True
+                
+            self.board_rows = new_board_rows
+            
         
 
     def find_all_moves(self, side):
@@ -498,10 +526,55 @@ class Board:
     
     
     def castle_moves(self, side):
-        return False
+        castle_move_list = []
+        
+        if side:
+            if self.WHITE_CASTLED:
+                return castle_move_list
+        else:
+            if self.BLACK_CASTLED:
+                return castle_move_list
+        
+        king_coord = None
+        for row in range(self.CONST_BOARD_ROWS):
+            for column in range(self.CONST_BOARD_COLUMNS):
+                if type(self.board_rows[row][column]) == King and self.board_rows[row][column].is_white == side:
+                    king_coord = (column, row)
+
+        if king_coord is None:
+            raise LookupError("King coord not found")
+            
+        if not self.board_rows[king_coord[1]][king_coord[0]].moved:
+            
+            if self.board_rows[king_coord[1]][0] is not None \
+                    and type(self.board_rows[king_coord[1]][0]) == Rook \
+                    and self.board_rows[king_coord[1]][0].is_white == side \
+                    and not self.board_rows[king_coord[1]][0].moved:
+                        
+                if self.board_rows[king_coord[1]][1] is None \
+                        and self.board_rows[king_coord[1]][2] is None \
+                        and self.board_rows[king_coord[1]][3] is None:
+                    king_move = copy.deepcopy(self)
+                    king_move.move_piece(((king_coord),(3, king_coord[1])))
+                    if not king_move.is_in_check(side):
+                        castle_move_list.append(("000", king_coord, (2, king_coord[1]), (0, king_coord[1]), (3, king_coord[1])))
+                        
+            if self.board_rows[king_coord[1]][7] is not None \
+                    and type(self.board_rows[king_coord[1]][7]) == Rook \
+                    and self.board_rows[king_coord[1]][7].is_white == side \
+                    and not self.board_rows[king_coord[1]][7].moved:
+                        
+                if self.board_rows[king_coord[1]][5] is None \
+                        and self.board_rows[king_coord[1]][6] is None:
+                    king_move = copy.deepcopy(self)
+                    king_move.move_piece(((king_coord),(5, king_coord[1])))
+                    if not king_move.is_in_check(side):
+                        castle_move_list.append(("00", king_coord, (6, king_coord[1]), (7, king_coord[1]), (5, king_coord[1])))        
+
+        return castle_move_list
 
     def find_all_legal_moves(self, side, en_passant_moves):
-        all_moves = self.find_all_moves(side) + en_passant_moves
+        all_moves = self.find_all_moves(side) + en_passant_moves + self.castle_moves(side)
 
         check_free_moves = []
 
@@ -510,6 +583,8 @@ class Board:
             test_check.move_piece(move)
             if not test_check.is_in_check(side):
                 check_free_moves.append(move)
+                
+        print(check_free_moves)
 
         return check_free_moves
     
