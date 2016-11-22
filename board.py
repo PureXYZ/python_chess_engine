@@ -255,7 +255,11 @@ class Board:
 
         return False
 
-    def move_piece(self, start_coord, end_coord):
+    def move_piece(self, move):
+        if move[0] != "ep":
+            start_coord = move[0]
+            end_coord = move[1]
+
         new_board_rows = self.board_rows
 
         new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]] \
@@ -476,13 +480,14 @@ class Board:
     def castle_moves(self, side):
         return False
 
-    def find_all_legal_moves(self, side, en_passant):
-        all_moves = self.find_all_moves(side)
+    def find_all_legal_moves(self, side, en_passant_moves):
+        all_moves = self.find_all_moves(side) + en_passant_moves
+
         check_free_moves = []
 
         for move in all_moves:
             test_check = copy.deepcopy(self)
-            test_check.move_piece(move[0], move[1])
+            test_check.move_piece(move)
             if not test_check.is_in_check(side):
                 check_free_moves.append(move)
 
