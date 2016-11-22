@@ -588,8 +588,6 @@ class Board:
             test_check.move_piece(move)
             if not test_check.is_in_check(side):
                 check_free_moves.append(move)
-                
-        print(check_free_moves)
 
         return check_free_moves
     
