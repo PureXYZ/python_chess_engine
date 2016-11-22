@@ -28,3 +28,19 @@ Steps:
 - Pieces
 - User input, move pieces legally
 - Computer algorithm, User vs Computer
+
+Todo:
+
+Pawn promotion (Special move)
+Castling (Special move)
+algerbraic notation io
+pretty io
+
+Computer offers draw
+User can offer draw (then if computer_move returns draw then draw?)
+?Append draw flag to existing move data struc?
+75 move Stalemate (flag for if move is capture or pawn move?)
+
+Negamax
+AlphaBeta
+Deepen Search
