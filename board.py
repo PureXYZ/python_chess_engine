@@ -61,35 +61,39 @@ class Board:
 
     def print_board_debug(self):
         #print board
-        for row in reversed(self.board_rows):
+        print("BLACK")
+        for row, i in zip(reversed(self.board_rows), range(7, -1, -1)):
             for piece in row:
                 if piece is None:
-                    print("|   |", end="")
+                    print("| |", end="")
                 elif type(piece) == Pawn and piece.is_white == self.CONST_WHITE:
-                    print("| ♙ |", end="")
+                    print("|♙|", end="")
                 elif type(piece) == Pawn and piece.is_white == self.CONST_BLACK:
-                    print("| ♟ |", end="")
+                    print("|♟|", end="")
                 elif type(piece) == Rook and piece.is_white == self.CONST_WHITE:
-                    print("| ♖ |", end="")
+                    print("|♖|", end="")
                 elif type(piece) == Rook and piece.is_white == self.CONST_BLACK:
-                    print("| ♜ |", end="")
+                    print("|♜|", end="")
                 elif type(piece) == Knight and piece.is_white == self.CONST_WHITE:
-                    print("| ♘ |", end="")
+                    print("|♘|", end="")
                 elif type(piece) == Knight and piece.is_white == self.CONST_BLACK:
-                    print("| ♞ |", end="")
+                    print("|♞|", end="")
                 elif type(piece) == Bishop and piece.is_white == self.CONST_WHITE:
-                    print("| ♗ |", end="")
+                    print("|♗|", end="")
                 elif type(piece) == Bishop and piece.is_white == self.CONST_BLACK:
-                    print("| ♝ |", end="")
+                    print("|♝|", end="")
                 elif type(piece) == Queen and piece.is_white == self.CONST_WHITE:
-                    print("| ♕ |", end="")
+                    print("|♕|", end="")
                 elif type(piece) == Queen and piece.is_white == self.CONST_BLACK:
-                    print("| ♛ |", end="")
+                    print("|♛|", end="")
                 elif type(piece) == King and piece.is_white == self.CONST_WHITE:
-                    print("| ♔ |", end="")
+                    print("|♔|", end="")
                 elif type(piece) == King and piece.is_white == self.CONST_BLACK:
-                    print("| ♚ |", end="")
-            print("\n")
+                    print("|♚|", end="")
+            print(" ", end="")
+            print(i)
+        print(" 0  1  2  3  4  5  6  7")
+        print("WHITE")
 
     def is_in_board(self, coord):
         return coord[self.CONST_COORD_COLUMN] >= 0 and coord[self.CONST_COORD_COLUMN] < self.CONST_BOARD_COLUMNS\
@@ -260,19 +264,35 @@ class Board:
             start_coord = move[0]
             end_coord = move[1]
 
-        new_board_rows = self.board_rows
+            new_board_rows = self.board_rows
 
-        new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]] \
-            = new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]]
+            new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]] \
+                = new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]]
 
-        new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
+            new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
 
-        if type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == Pawn \
-                or type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == King\
-                or type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == Rook:
-            new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]].moved = True
+            if type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == Pawn \
+                    or type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == King\
+                    or type(new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]]) == Rook:
+                new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]].moved = True
 
-        self.board_rows = new_board_rows
+            self.board_rows = new_board_rows
+            
+        elif move[0] == "ep":
+            start_coord = move[1]
+            end_coord = move[2]
+            remove_coord = move[3]
+            
+            new_board_rows = self.board_rows
+            
+            new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]] \
+                = new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]]
+                
+            new_board_rows[remove_coord[self.CONST_COORD_ROW]][remove_coord[self.CONST_COORD_COLUMN]] \
+                = None
+                
+            self.board_rows = new_board_rows
+        
 
     def find_all_moves(self, side):
         move_list = []

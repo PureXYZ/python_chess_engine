@@ -15,20 +15,11 @@ class Algorithm:
         if len(self.board_history) <= 1 or self.board_history[0][2][0] == "ep":
             return en_passant_moves
 
-        print('testing ep')
-
-
         last_move_start_row = self.board_history[0][2][0][1]
         last_move_start_column = self.board_history[0][2][0][0]
         last_move_end_row = self.board_history[0][2][1][1]
         last_move_end_column = self.board_history[0][2][1][0]
         current_board = copy.deepcopy(self.board_history[0][0])
-
-        print(last_move_start_row)
-        print(last_move_start_column)
-        print(last_move_end_row)
-        print(last_move_end_column)
-
 
         if type(current_board.board_rows[last_move_end_row][last_move_end_column]) == Pawn:
             if abs(last_move_end_row - last_move_start_row) == 2:
@@ -71,25 +62,3 @@ class Algorithm:
     def computer_move(self, side):
         return False
 
-a = Algorithm(Board())
-a.board_history[0][0].print_board_debug()
-print("")
-a.make_user_move(True, ((4, 1), (4, 3)))
-a.board_history[0][0].print_board_debug()
-print("")
-a.make_user_move(False, ((0, 6), (0, 5)))
-a.board_history[0][0].print_board_debug()
-print("")
-a.make_user_move(True, ((4, 3), (4, 4)))
-a.board_history[0][0].print_board_debug()
-print("")
-a.make_user_move(False, ((0, 5), (0, 4)))
-a.board_history[0][0].print_board_debug()
-print("")
-a.make_user_move(True, ((1, 0), (0, 2)))
-a.board_history[0][0].print_board_debug()
-print("")
-a.make_user_move(False, ((3, 6), (3, 4)))
-a.board_history[0][0].print_board_debug()
-print("")
-print(a.en_passant_move(True))
