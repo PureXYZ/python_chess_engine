@@ -514,19 +514,6 @@ class Board:
                         
         return move_list
 
-    def evaluate_points(self, side):
-        sum_points = 0
-        for row in range(self.CONST_BOARD_ROWS):
-            for column in range(self.CONST_BOARD_COLUMNS):
-                if self.board_rows[row][column] is None:
-                    continue
-                elif self.board_rows[row][column].is_white == side:
-                    sum_points += self.board_rows[row][column].value
-                elif self.board_rows[row][column].is_white != side:
-                    sum_points -= self.board_rows[row][column].value
-        return sum_points
-    
-    
     def castle_moves(self, side):
         castle_move_list = []
         
@@ -590,5 +577,21 @@ class Board:
                 check_free_moves.append(move)
 
         return check_free_moves
+    
+    def evaluate_points(self, side, ep):
+        sum_points = 0.0
+        for row in range(self.CONST_BOARD_ROWS):
+            for column in range(self.CONST_BOARD_COLUMNS):
+                if self.board_rows[row][column] is None:
+                    continue
+                elif self.board_rows[row][column].is_white == side:
+                    sum_points += self.board_rows[row][column].value
+                elif self.board_rows[row][column].is_white != side:
+                    sum_points -= self.board_rows[row][column].value
+                    
+        sum_points += 0.1 * len(find_all_legal_moves(side, []))
+        sum_points -= 0.1 * len(find_all_legal_moves(not side, []))
+                                                        
+        return sum_points
     
 
