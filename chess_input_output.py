@@ -64,6 +64,8 @@ class ChessIO:
                 translated_move = ((translated_move_start_column,translated_move_start_row),(translated_move_end_column,translated_move_end_row))
         except ValueError:
             print("Move not recognized")
+        except KeyError:
+            print("Move not recognized")
 
         return translated_move
         
