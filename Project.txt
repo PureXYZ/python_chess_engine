@@ -31,8 +31,6 @@ Steps:
 
 Todo:
 
-Pawn promotion (Special move)
-Castling (Special move)
 algerbraic notation io
 pretty io
 

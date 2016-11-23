@@ -59,6 +59,6 @@ class Algorithm:
         else:
             return -1
     
-    def computer_move(self, side):
-        return False
+    def make_computer_move(self, side):
+        return -1
 
