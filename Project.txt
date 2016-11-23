@@ -32,6 +32,7 @@ Steps:
 Todo:
 
 Increase efficiency -> find slow functions
+is_insufficient_material() method
 
 algerbraic notation io
 pretty io
