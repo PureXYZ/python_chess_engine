@@ -519,7 +519,7 @@ class Board:
                                 move_list.append(((column, row),(i, row)))
                                 break
                                 
-                        for i in range(row - 1, -1, -1):
+                        for i in range(column - 1, -1, -1):
                             if self.board_rows[row][i] is None:
                                 move_list.append(((column, row),(i, row)))
                                 continue

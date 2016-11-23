@@ -79,6 +79,7 @@ class Algorithm:
             copy_board = copy.deepcopy(board)
             copy_board.move_piece(move)
             x = -self.negamax(not side, copy_board, move, depth - 1)
+            copy_board = None
             if x > max_points:
                 max_points = x
         
@@ -92,7 +93,7 @@ class Algorithm:
             copy_board_ep = self.en_passant_move(side, copy_board, last_move)
         else:
             copy_board_ep = []
-        depth = 1
+        depth = 0
         possible_moves = copy_board.find_all_legal_moves(side, copy_board_ep)
         
         analyzed_moves = []
@@ -120,10 +121,10 @@ class Algorithm:
         self.board_history.insert(0, (new_board, side, move))
         
         if self.side_to_move:
-            print(Computer moves:)
+            print("White Computer moves:")
             print(max_move)
         else:
-            print(Computer moves:)
+            print("Black Computer moves:")
             print(max_move)
         
         self.side_to_move = not self.side_to_move

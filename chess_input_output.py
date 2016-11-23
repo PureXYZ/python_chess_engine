@@ -79,6 +79,10 @@ class ChessIO:
             print("Black loses")
             
             
+    def checkmate(self, side_to_move):
+        print("Stalemate")
+            
+            
     def check(self, side_to_move):
         if side_to_move:
             print("White in check")
