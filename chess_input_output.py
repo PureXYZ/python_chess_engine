@@ -31,7 +31,7 @@ class ChessIO:
             else:
                 translated_move = ("000", (4, 7), (2, 7), (0, 7), (3, 7))
             
-        elif input_move[-4:] == "e.p.":
+        elif len(input_move) >= 9 and input_move[-4:] == "e.p.":
             input_move = input_move[:-4]
             
             translated_move_start_column = self.char_num_mapping[input_move[0]]
@@ -39,8 +39,20 @@ class ChessIO:
             translated_move_end_column = self.char_num_mapping[input_move[3]]
             translated_move_end_row = int(input_move[4])
             
-            translated_move = ("ep", (translated_move_start_column, translated_move_start_row), (translated_move_end_column, translated_move_end_row), (translated_move_end_column, translated_move_start_row))
-            
+            translated_move = ("ep", (translated_move_start_column, translated_move_start_row),
+                               (translated_move_end_column, translated_move_end_row), (translated_move_end_column, translated_move_start_row))
+
+        elif len(input_move) >= 6 and input_move[-1:] in ["Q", "K", "N", "R", "B"]:
+            pp_type = input_move[-1:]
+
+            translated_move_start_column = self.char_num_mapping[input_move[0]]
+            translated_move_start_row = int(input_move[1])
+            translated_move_end_column = self.char_num_mapping[input_move[3]]
+            translated_move_end_row = int(input_move[4])
+
+            translated_move = ("pp",(translated_move_start_column,translated_move_start_row),
+                               (translated_move_end_column, translated_move_end_row), pp_type, side_to_move)
+
         else:
             if input_move[0] in ["Q", "K", "N", "R", "B"]:
                 input_move = input_move[:-1]

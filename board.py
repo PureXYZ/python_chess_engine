@@ -67,29 +67,29 @@ class Board:
                 if piece is None:
                     print("| |", end="")
                 elif type(piece) == Pawn and piece.is_white == self.CONST_WHITE:
-                    print("|♙|", end="")
+                    print("|p|", end="")
                 elif type(piece) == Pawn and piece.is_white == self.CONST_BLACK:
-                    print("|♟|", end="")
+                    print("|P|", end="")
                 elif type(piece) == Rook and piece.is_white == self.CONST_WHITE:
-                    print("|♖|", end="")
+                    print("|r|", end="")
                 elif type(piece) == Rook and piece.is_white == self.CONST_BLACK:
-                    print("|♜|", end="")
+                    print("|R|", end="")
                 elif type(piece) == Knight and piece.is_white == self.CONST_WHITE:
-                    print("|♘|", end="")
+                    print("|n|", end="")
                 elif type(piece) == Knight and piece.is_white == self.CONST_BLACK:
-                    print("|♞|", end="")
+                    print("|N|", end="")
                 elif type(piece) == Bishop and piece.is_white == self.CONST_WHITE:
-                    print("|♗|", end="")
+                    print("|b|", end="")
                 elif type(piece) == Bishop and piece.is_white == self.CONST_BLACK:
-                    print("|♝|", end="")
+                    print("|B|", end="")
                 elif type(piece) == Queen and piece.is_white == self.CONST_WHITE:
-                    print("|♕|", end="")
+                    print("|q|", end="")
                 elif type(piece) == Queen and piece.is_white == self.CONST_BLACK:
-                    print("|♛|", end="")
+                    print("|Q|", end="")
                 elif type(piece) == King and piece.is_white == self.CONST_WHITE:
-                    print("|♔|", end="")
+                    print("|k|", end="")
                 elif type(piece) == King and piece.is_white == self.CONST_BLACK:
-                    print("|♚|", end="")
+                    print("|K|", end="")
             print(" ", end="")
             print(i)
         print(" a  b  c  d  e  f  g  h")
@@ -116,8 +116,12 @@ class Board:
                 continue
             elif self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]].is_white == side:
                 break
+            elif self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]].is_white != side \
+                    and type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) != Queen \
+                    and type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) != Rook:
+                break
             elif type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) == Queen \
-                or type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) == Rook:
+                    or type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) == Rook:
                 return True
 
         #check rows from king to 7 (vertically)
@@ -125,6 +129,10 @@ class Board:
             if self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]] is None:
                 continue
             elif self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]].is_white == side:
+                break
+            elif self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]].is_white != side \
+                    and type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) != Queen \
+                    and type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) != Rook:
                 break
             elif type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) == Queen \
                 or type(self.board_rows[row][king_coord[self.CONST_COORD_COLUMN]]) == Rook:
@@ -136,6 +144,10 @@ class Board:
                 continue
             elif self.board_rows[king_coord[self.CONST_COORD_ROW]][column].is_white == side:
                 break
+            elif self.board_rows[king_coord[self.CONST_COORD_ROW]][column].is_white != side \
+                    and type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) != Queen \
+                    and type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) != Rook:
+                break
             elif type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) == Queen \
                 or type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) == Rook:
                 return True
@@ -145,6 +157,10 @@ class Board:
             if self.board_rows[king_coord[self.CONST_COORD_ROW]][column] is None:
                 continue
             elif self.board_rows[king_coord[self.CONST_COORD_ROW]][column].is_white == side:
+                break
+            elif self.board_rows[king_coord[self.CONST_COORD_ROW]][column].is_white != side \
+                    and type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) != Queen \
+                    and type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) != Rook:
                 break
             elif type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) == Queen \
                 or type(self.board_rows[king_coord[self.CONST_COORD_ROW]][column]) == Rook:
@@ -157,6 +173,10 @@ class Board:
                 continue
             elif self.board_rows[row][column].is_white == side:
                 break
+            elif self.board_rows[row][column].is_white != side \
+                    and type(self.board_rows[row][column]) != Queen \
+                    and type(self.board_rows[row][column]) != Bishop:
+                break
             elif type(self.board_rows[row][column]) == Queen \
                 or type(self.board_rows[row][column]) == Bishop:
                 return True
@@ -167,6 +187,10 @@ class Board:
             if self.board_rows[row][column] is None:
                 continue
             elif self.board_rows[row][column].is_white == side:
+                break
+            elif self.board_rows[row][column].is_white != side \
+                    and type(self.board_rows[row][column]) != Queen \
+                    and type(self.board_rows[row][column]) != Bishop:
                 break
             elif type(self.board_rows[row][column]) == Queen \
                 or type(self.board_rows[row][column]) == Bishop:
@@ -179,6 +203,10 @@ class Board:
                 continue
             elif self.board_rows[row][column].is_white == side:
                 break
+            elif self.board_rows[row][column].is_white != side \
+                    and type(self.board_rows[row][column]) != Queen \
+                    and type(self.board_rows[row][column]) != Bishop:
+                break
             elif type(self.board_rows[row][column]) == Queen \
                 or type(self.board_rows[row][column]) == Bishop:
                 return True
@@ -189,6 +217,10 @@ class Board:
             if self.board_rows[row][column] is None:
                 continue
             elif self.board_rows[row][column].is_white == side:
+                break
+            elif self.board_rows[row][column].is_white != side \
+                    and type(self.board_rows[row][column]) != Queen \
+                    and type(self.board_rows[row][column]) != Bishop:
                 break
             elif type(self.board_rows[row][column]) == Queen \
                 or type(self.board_rows[row][column]) == Bishop:
@@ -260,7 +292,7 @@ class Board:
         return False
 
     def move_piece(self, move):
-        if move[0] != "ep" and move[0] != "00" and move[0] != "000":
+        if move[0] != "ep" and move[0] != "00" and move[0] != "000" and move[0] != "pp":
             start_coord = move[0]
             end_coord = move[1]
 
@@ -277,6 +309,7 @@ class Board:
                 new_board_rows[end_coord[self.CONST_COORD_ROW]][end_coord[self.CONST_COORD_COLUMN]].moved = True
 
             self.board_rows = new_board_rows
+            return
             
         if move[0] == "ep":
             start_coord = move[1]
@@ -294,6 +327,7 @@ class Board:
             new_board_rows[start_coord[self.CONST_COORD_ROW]][start_coord[self.CONST_COORD_COLUMN]] = None
                 
             self.board_rows = new_board_rows
+            return
             
         if move[0] == '00' or move[0] == '000':
             king_start_coord = move[1]
@@ -321,6 +355,31 @@ class Board:
             new_board_rows[king_end_coord[1]][king_end_coord[0]].moved = True
                 
             self.board_rows = new_board_rows
+            return
+
+        if move[0] == "pp":
+
+            piece_type = move[3]
+            pawn_start_coord = move[1]
+            piece_end_coord = move[2]
+            side = move[4]
+
+            new_board_rows = self.board_rows
+
+            if piece_type == "Q":
+                new_board_rows[piece_end_coord[1]][piece_end_coord[0]] = Queen(side, piece_end_coord)
+            elif piece_type == "R":
+                new_board_rows[piece_end_coord[1]][piece_end_coord[0]] = Rook(side, piece_end_coord)
+                new_board_rows[piece_end_coord[1]][piece_end_coord[0]].moved = True
+            elif piece_type == "B":
+                new_board_rows[piece_end_coord[1]][piece_end_coord[0]] = Bishop(side, piece_end_coord)
+            elif piece_type == "N":
+                new_board_rows[piece_end_coord[1]][piece_end_coord[0]] = Knight(side, piece_end_coord)
+
+            new_board_rows[pawn_start_coord[1]][pawn_start_coord[0]] = None
+
+            self.board_rows = new_board_rows
+            return
             
         
 
@@ -335,7 +394,7 @@ class Board:
                 else:
                     #pawn movement
                     if type(self.board_rows[row][column]) == Pawn:
-                        if self.board_rows[row][column].is_white:
+                        if self.board_rows[row][column].is_white and row != 6:
                             if self.is_in_board((column, row + 1)) and self.board_rows[row + 1][column] is None:
                                 move_list.append(((column, row), (column, row + 1)))
 
@@ -354,7 +413,7 @@ class Board:
                                     and self.board_rows[row + 1][column + 1] is not None \
                                     and self.board_rows[row + 1][column + 1].is_white != side:
                                 move_list.append(((column, row), (column + 1, row + 1)))
-                        else:
+                        elif not self.board_rows[row][column].is_white and row != 1:
                             if self.is_in_board((column, row - 1)) and self.board_rows[row - 1][column] is None:
                                 move_list.append(((column, row), (column, row - 1)))
 
@@ -565,8 +624,62 @@ class Board:
 
         return castle_move_list
 
+    def pawn_promo_moves(self, side):
+        pp_moves = []
+
+        if side:
+            for column in range(0, 8, 1):
+                if self.board_rows[6][column] is not None and \
+                        self.board_rows[6][column].is_white == side and \
+                        type(self.board_rows[6][column]) == Pawn:
+                    if self.board_rows[7][column] is None:
+                        pp_moves.append(("pp", (column, 6), (column, 7), "Q", side))
+                        pp_moves.append(("pp", (column, 6), (column, 7), "R", side))
+                        pp_moves.append(("pp", (column, 6), (column, 7), "N", side))
+                        pp_moves.append(("pp", (column, 6), (column, 7), "B", side))
+                    if self.is_in_board((column - 1, 7)) \
+                            and self.board_rows[7][column - 1] is not None \
+                            and self.board_rows[7][column - 1].is_white != side:
+                        pp_moves.append(("pp", (column, 6), (column - 1, 7), "Q", side))
+                        pp_moves.append(("pp", (column, 6), (column - 1, 7), "R", side))
+                        pp_moves.append(("pp", (column, 6), (column - 1, 7), "N", side))
+                        pp_moves.append(("pp", (column, 6), (column - 1, 7), "B", side))
+                    if self.is_in_board((column + 1, 7)) \
+                            and self.board_rows[7][column + 1] is not None \
+                            and self.board_rows[7][column + 1].is_white != side:
+                        pp_moves.append(("pp", (column, 6), (column + 1, 7), "Q", side))
+                        pp_moves.append(("pp", (column, 6), (column + 1, 7), "R", side))
+                        pp_moves.append(("pp", (column, 6), (column + 1, 7), "N", side))
+                        pp_moves.append(("pp", (column, 6), (column + 1, 7), "B", side))
+        else:
+            for column in range(0, 8, 1):
+                if self.board_rows[1][column] is not None and \
+                        self.board_rows[1][column].is_white == side and \
+                        type(self.board_rows[1][column]) == Pawn:
+                    if self.board_rows[0][column] is None:
+                        pp_moves.append(("pp", (column, 1), (column, 0), "Q", side))
+                        pp_moves.append(("pp", (column, 1), (column, 0), "R", side))
+                        pp_moves.append(("pp", (column, 1), (column, 0), "N", side))
+                        pp_moves.append(("pp", (column, 1), (column, 0), "B", side))
+                    if self.is_in_board((column - 1, 0)) \
+                            and self.board_rows[0][column - 1] is not None \
+                            and self.board_rows[0][column - 1].is_white != side:
+                        pp_moves.append(("pp", (column, 1), (column - 1, 0), "Q", side))
+                        pp_moves.append(("pp", (column, 1), (column - 1, 0), "R", side))
+                        pp_moves.append(("pp", (column, 1), (column - 1, 0), "N", side))
+                        pp_moves.append(("pp", (column, 1), (column - 1, 0), "B", side))
+                    if self.is_in_board((column + 1, 0)) \
+                            and self.board_rows[0][column + 1] is not None \
+                            and self.board_rows[0][column + 1].is_white != side:
+                        pp_moves.append(("pp", (column, 1), (column + 1, 0), "Q", side))
+                        pp_moves.append(("pp", (column, 1), (column + 1, 0), "R", side))
+                        pp_moves.append(("pp", (column, 1), (column + 1, 0), "N", side))
+                        pp_moves.append(("pp", (column, 1), (column + 1, 0), "B", side))
+
+        return pp_moves
+
     def find_all_legal_moves(self, side, en_passant_moves):
-        all_moves = self.find_all_moves(side) + en_passant_moves + self.castle_moves(side)
+        all_moves = self.find_all_moves(side) + en_passant_moves + self.castle_moves(side) + self.pawn_promo_moves(side)
 
         check_free_moves = []
 
@@ -591,6 +704,17 @@ class Board:
                     
         sum_points += 0.1 * len(find_all_legal_moves(side, []))
         sum_points -= 0.1 * len(find_all_legal_moves(not side, []))
+
+        if side:
+            if self.WHITE_CASTLED:
+                sum_points += 1
+            if self.BLACK_CASTLED:
+                sum_points -= 1
+        else:
+            if self.WHITE_CASTLED:
+                sum_points -= 1
+            if self.BLACK_CASTLED:
+                sum_points += 1
                                                         
         return sum_points
     
