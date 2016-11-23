@@ -119,11 +119,13 @@ class Algorithm:
         new_board.move_piece(max_move)
         self.board_history.insert(0, (new_board, side, move))
         
-        if side_to_move:
-            print("Computer White moves:")
+        if self.side_to_move:
+            print(Computer moves:)
             print(max_move)
         else:
-            print("Computer Black moves:")
+            print(Computer moves:)
             print(max_move)
+        
+        self.side_to_move = not self.side_to_move
         return 1
 
