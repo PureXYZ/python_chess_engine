@@ -1,6 +1,7 @@
 from board import Board
 from pawn import Pawn
 import copy
+import random
 
 class Algorithm:
     def __init__(self, initial_board):
@@ -70,15 +71,11 @@ class Algorithm:
             
         possible_moves = board.find_all_legal_moves(side, en_passant_moves)
         if len(possible_moves) == 0 or depth == 0:
-            print("          negamax lowest node reached")
-            print(board.evaluate_points(side, en_passant_moves))
             return board.evaluate_points(side, en_passant_moves)
         
         max_points = float("-inf")
         
         for move in possible_moves:
-            print("     looking at move neganax loop:")
-            print(move)
             copy_board = copy.deepcopy(board)
             copy_board.move_piece(move)
             x = -self.negamax(not side, copy_board, move, depth - 1)
@@ -99,18 +96,34 @@ class Algorithm:
         possible_moves = copy_board.find_all_legal_moves(side, copy_board_ep)
         
         analyzed_moves = []
+        analyzed_points = []
         for move in possible_moves:
-            print("looking at initial move:")
-            print(move)
-            analyzed_moves.append((move, self.negamax(side, copy_board, last_move, depth)))
+            copy_board_moved = copy.deepcopy(copy_board)
+            copy_board_moved.move_piece(move)
+            points = self.negamax(not side, copy_board_moved, move, depth)
+            analyzed_moves.append((move, points))
+            analyzed_points.append(points)
+            copy_board_moved = None
         
-        max_move_points = float("-inf")
-        max_move = None
+        max_move_points = min(analyzed_points)
+                                   
+        same_move_points = []
         for analysis in analyzed_moves:
-            if analysis[1] > max_move_points:
-                max_move_points = analysis[1]
-                max_move = analysis[0]
-            
+            if analysis[1] == max_move_points:
+                same_move_points.append(analysis)
         
-        return max_move
+        max_move = random.choice(same_move_points)
+        max_move = max_move[0]
+        
+        new_board = copy.deepcopy(self.board_history[0][0])
+        new_board.move_piece(max_move)
+        self.board_history.insert(0, (new_board, side, move))
+        
+        if side_to_move:
+            print("Computer White moves:")
+            print(max_move)
+        else:
+            print("Computer Black moves:")
+            print(max_move)
+        return 1
 
