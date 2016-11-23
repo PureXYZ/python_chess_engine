@@ -702,8 +702,8 @@ class Board:
                 elif self.board_rows[row][column].is_white != side:
                     sum_points -= self.board_rows[row][column].value
                     
-        sum_points += 0.1 * len(find_all_legal_moves(side, []))
-        sum_points -= 0.1 * len(find_all_legal_moves(not side, []))
+        sum_points += 0.1 * len(self.find_all_legal_moves(side, ep))
+        sum_points -= 0.1 * len(self.find_all_legal_moves(not side, ep))
 
         if side:
             if self.WHITE_CASTLED:
@@ -716,6 +716,6 @@ class Board:
             if self.BLACK_CASTLED:
                 sum_points += 1
                                                         
-        return sum_points
+        return round(sum_points, 1)
     
 
