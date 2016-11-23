@@ -31,6 +31,8 @@ Steps:
 
 Todo:
 
+Increase efficiency -> find slow functions
+
 algerbraic notation io
 pretty io
 
@@ -39,6 +41,5 @@ User can offer draw (then if computer_move returns draw then draw?)
 ?Append draw flag to existing move data struc?
 75 move Stalemate (flag for if move is capture or pawn move?)
 
-Negamax
 AlphaBeta
 Deepen Search

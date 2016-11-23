@@ -707,14 +707,14 @@ class Board:
 
         if side:
             if self.WHITE_CASTLED:
-                sum_points += 1
+                sum_points += 0.5
             if self.BLACK_CASTLED:
-                sum_points -= 1
+                sum_points -= 0.5
         else:
             if self.WHITE_CASTLED:
-                sum_points -= 1
+                sum_points -= 0.5
             if self.BLACK_CASTLED:
-                sum_points += 1
+                sum_points += 0.5
                                                         
         return round(sum_points, 1)
     
