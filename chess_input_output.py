@@ -1,5 +1,3 @@
-from board import Board
-
 class ChessIO:
     
     char_num_mapping = {"a" : 0, "b" : 1, "c" : 2, "d" : 3, "e" : 4, "f" : 5, "g" : 6, "h" : 7}
@@ -19,52 +17,54 @@ class ChessIO:
         
         translated_move = -1
         
-        if input_move == "0-0":
-            if side_to_move:
-                translated_move = ("00", (4, 0), (6, 0), (7, 0), (5, 0))
-            else:
-                translated_move = ("00", (4, 7), (6, 7), (7, 7), (5, 7))
-            
-        elif input_move == "0-0-0":
-            if side_to_move:
-                translated_move = ("000", (4, 0), (2, 0), (0, 0), (3, 0))
-            else:
-                translated_move = ("000", (4, 7), (2, 7), (0, 7), (3, 7))
-            
-        elif len(input_move) >= 9 and input_move[-4:] == "e.p.":
-            input_move = input_move[:-4]
-            
-            translated_move_start_column = self.char_num_mapping[input_move[0]]
-            translated_move_start_row = int(input_move[1])
-            translated_move_end_column = self.char_num_mapping[input_move[3]]
-            translated_move_end_row = int(input_move[4])
-            
-            translated_move = ("ep", (translated_move_start_column, translated_move_start_row),
-                               (translated_move_end_column, translated_move_end_row), (translated_move_end_column, translated_move_start_row))
+        try:
+            if input_move == "0-0":
+                if side_to_move:
+                    translated_move = ("00", (4, 0), (6, 0), (7, 0), (5, 0))
+                else:
+                    translated_move = ("00", (4, 7), (6, 7), (7, 7), (5, 7))
 
-        elif len(input_move) >= 6 and input_move[-1:] in ["Q", "K", "N", "R", "B"]:
-            pp_type = input_move[-1:]
+            elif input_move == "0-0-0":
+                if side_to_move:
+                    translated_move = ("000", (4, 0), (2, 0), (0, 0), (3, 0))
+                else:
+                    translated_move = ("000", (4, 7), (2, 7), (0, 7), (3, 7))
 
-            translated_move_start_column = self.char_num_mapping[input_move[0]]
-            translated_move_start_row = int(input_move[1])
-            translated_move_end_column = self.char_num_mapping[input_move[3]]
-            translated_move_end_row = int(input_move[4])
+            elif len(input_move) >= 9 and input_move[-4:] == "e.p.":
+                input_move = input_move[:-4]
 
-            translated_move = ("pp",(translated_move_start_column,translated_move_start_row),
-                               (translated_move_end_column, translated_move_end_row), pp_type, side_to_move)
+                translated_move_start_column = self.char_num_mapping[input_move[0]]
+                translated_move_start_row = int(input_move[1])
+                translated_move_end_column = self.char_num_mapping[input_move[3]]
+                translated_move_end_row = int(input_move[4])
 
-        else:
-            if input_move[0] in ["Q", "K", "N", "R", "B"]:
-                input_move = input_move[:-1]
-            
-            translated_move_start_column = self.char_num_mapping[input_move[0]]
-            translated_move_start_row = int(input_move[1])
-            translated_move_end_column = self.char_num_mapping[input_move[3]]
-            translated_move_end_row = int(input_move[4])
-            
-            translated_move = ((translated_move_start_column,translated_move_start_row),(translated_move_end_column,translated_move_end_row))
-        
-        
+                translated_move = ("ep", (translated_move_start_column, translated_move_start_row),
+                                   (translated_move_end_column, translated_move_end_row), (translated_move_end_column, translated_move_start_row))
+
+            elif len(input_move) >= 6 and input_move[-1:] in ["Q", "K", "N", "R", "B"]:
+                pp_type = input_move[-1:]
+
+                translated_move_start_column = self.char_num_mapping[input_move[0]]
+                translated_move_start_row = int(input_move[1])
+                translated_move_end_column = self.char_num_mapping[input_move[3]]
+                translated_move_end_row = int(input_move[4])
+
+                translated_move = ("pp",(translated_move_start_column,translated_move_start_row),
+                                   (translated_move_end_column, translated_move_end_row), pp_type, side_to_move)
+
+            elif len(input_move) >= 5:
+                if input_move[0] in ["Q", "K", "N", "R", "B"]:
+                    input_move = input_move[:-1]
+
+                translated_move_start_column = self.char_num_mapping[input_move[0]]
+                translated_move_start_row = int(input_move[1])
+                translated_move_end_column = self.char_num_mapping[input_move[3]]
+                translated_move_end_row = int(input_move[4])
+
+                translated_move = ((translated_move_start_column,translated_move_start_row),(translated_move_end_column,translated_move_end_row))
+        except ValueError:
+            print("Move not recognized")
+
         return translated_move
         
         
