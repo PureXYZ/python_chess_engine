@@ -1,4 +1,9 @@
 from board import Board
+from king import King
+from queen import Queen
+from rook import Rook
+from bishop import Bishop
+from knight import Knight
 from pawn import Pawn
 import copy
 import random
@@ -6,7 +11,6 @@ import random
 class Algorithm:
     def __init__(self, initial_board):
         self.board_history = []
-        #(board, side, move)
         self.board_history.append((initial_board, False, None))
         self.side_to_move = True
 
@@ -23,27 +27,34 @@ class Algorithm:
         last_move_start_column = last_move[0][0]
         last_move_end_row = last_move[1][1]
         last_move_end_column = last_move[1][0]
-        current_board = copy.deepcopy(board)
 
-        if type(current_board.board_rows[last_move_end_row][last_move_end_column]) == Pawn:
+        if type(board.board_rows[last_move_end_row][last_move_end_column]) == Pawn:
             if abs(last_move_end_row - last_move_start_row) == 2:
-                if current_board.is_in_board((last_move_end_column - 1, last_move_end_row)):
-                    if current_board.board_rows[last_move_end_row][last_move_end_column - 1] is not None \
-                            and type(current_board.board_rows[last_move_end_row][last_move_end_column - 1]) == Pawn \
-                            and current_board.board_rows[last_move_end_row][last_move_end_column - 1].is_white == side:
+                if board.is_in_board((last_move_end_column - 1, last_move_end_row)):
+                    if board.board_rows[last_move_end_row][last_move_end_column - 1] is not None \
+                            and type(board.board_rows[last_move_end_row][last_move_end_column - 1]) == Pawn \
+                            and board.board_rows[last_move_end_row][last_move_end_column - 1].is_white == side:
                         if side == True:
-                            en_passant_moves.append(("ep", (last_move_end_column - 1, last_move_end_row), (last_move_end_column, last_move_end_row + 1), (last_move_end_column, last_move_end_row)))
+                            pawn_captured = Pawn(not side, (last_move_end_column, last_move_end_row))
+                            pawn_captured.moved = True
+                            en_passant_moves.append(("ep", (last_move_end_column - 1, last_move_end_row), (last_move_end_column, last_move_end_row + 1), (last_move_end_column, last_move_end_row), pawn_captured))
                         else:
-                            en_passant_moves.append(("ep", (last_move_end_column - 1, last_move_end_row), (last_move_end_column, last_move_end_row - 1), (last_move_end_column, last_move_end_row)))
+                            pawn_captured = Pawn(not side, (last_move_end_column, last_move_end_row))
+                            pawn_captured.moved = True
+                            en_passant_moves.append(("ep", (last_move_end_column - 1, last_move_end_row), (last_move_end_column, last_move_end_row - 1), (last_move_end_column, last_move_end_row), pawn_captured))
 
-                if current_board.is_in_board((last_move_end_column + 1, last_move_end_row)):
-                    if current_board.board_rows[last_move_end_row][last_move_end_column + 1] is not None \
-                            and type(current_board.board_rows[last_move_end_row][last_move_end_column + 1]) == Pawn \
-                            and current_board.board_rows[last_move_end_row][last_move_end_column + 1].is_white == side:
+                if board.is_in_board((last_move_end_column + 1, last_move_end_row)):
+                    if board.board_rows[last_move_end_row][last_move_end_column + 1] is not None \
+                            and type(board.board_rows[last_move_end_row][last_move_end_column + 1]) == Pawn \
+                            and board.board_rows[last_move_end_row][last_move_end_column + 1].is_white == side:
                         if side == True:
-                            en_passant_moves.append(("ep", (last_move_end_column + 1, last_move_end_row), (last_move_end_column, last_move_end_row + 1), (last_move_end_column, last_move_end_row)))
+                            pawn_captured = Pawn(not side, (last_move_end_column, last_move_end_row))
+                            pawn_captured.moved = True
+                            en_passant_moves.append(("ep", (last_move_end_column + 1, last_move_end_row), (last_move_end_column, last_move_end_row + 1), (last_move_end_column, last_move_end_row), pawn_captured))
                         else:
-                            en_passant_moves.append(("ep", (last_move_end_column + 1, last_move_end_row), (last_move_end_column, last_move_end_row - 1), (last_move_end_column, last_move_end_row)))
+                            pawn_captured = Pawn(not side, (last_move_end_column, last_move_end_row))
+                            pawn_captured.moved = True
+                            en_passant_moves.append(("ep", (last_move_end_column + 1, last_move_end_row), (last_move_end_column, last_move_end_row - 1), (last_move_end_column, last_move_end_row), pawn_captured))
 
         return en_passant_moves
     
@@ -52,7 +63,7 @@ class Algorithm:
         if side != self.side_to_move:
             raise ValueError("Not user side to move")
 
-        en_passant_moves = self.en_passant_move(side, board_history[0][0], board_history[0][2])
+        en_passant_moves = self.en_passant_move(side, self.board_history[0][0], self.board_history[0][2])
 
         if move in self.board_history[0][0].find_all_legal_moves(side, en_passant_moves):
             new_board = copy.deepcopy(self.board_history[0][0])
@@ -76,10 +87,9 @@ class Algorithm:
         max_points = float("-inf")
         
         for move in possible_moves:
-            copy_board = copy.deepcopy(board)
-            copy_board.move_piece(move)
-            x = -self.negamax(not side, copy_board, move, depth - 1)
-            copy_board = None
+            board.move_piece(move)
+            x = -self.negamax(not side, board, move, depth - 1)
+            board.unmove_piece(move)
             if x > max_points:
                 max_points = x
         
@@ -93,18 +103,17 @@ class Algorithm:
             copy_board_ep = self.en_passant_move(side, copy_board, last_move)
         else:
             copy_board_ep = []
-        depth = 0
+        depth = 2
         possible_moves = copy_board.find_all_legal_moves(side, copy_board_ep)
         
         analyzed_moves = []
         analyzed_points = []
         for move in possible_moves:
-            copy_board_moved = copy.deepcopy(copy_board)
-            copy_board_moved.move_piece(move)
-            points = self.negamax(not side, copy_board_moved, move, depth)
+            copy_board.move_piece(move)
+            points = self.negamax(not side, copy_board, move, depth)
+            copy_board.unmove_piece(move)
             analyzed_moves.append((move, points))
             analyzed_points.append(points)
-            copy_board_moved = None
         
         max_move_points = min(analyzed_points)
                                    
