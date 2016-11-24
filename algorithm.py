@@ -103,7 +103,7 @@ class Algorithm:
             copy_board_ep = self.en_passant_move(side, copy_board, last_move)
         else:
             copy_board_ep = []
-        depth = 2
+        depth = 1
         possible_moves = copy_board.find_all_legal_moves(side, copy_board_ep)
         
         analyzed_moves = []

@@ -12,14 +12,13 @@ side_to_move = WHITE
 
 
 game.board_history[0][0].print_board_debug()
-
+"""
 import cProfile
 cProfile.run('game.make_computer_move(side_to_move)', 'myFunction.profile')
 
 import pstats
 stats = pstats.Stats('myFunction.profile')
 stats.strip_dirs().sort_stats('time').print_stats()
-
 """
 while True:
     
@@ -55,11 +54,11 @@ while True:
          
     #move_result = game.make_user_move(side_to_move, move)
     
-    if move_result == -1:
-        print("Invalid move, try again")
-        continue
+    #if move_result == -1:
+    #    print("Invalid move, try again")
+    #    continue
         
     side_to_move = not side_to_move
     
     game.board_history[0][0].print_board_debug()
-"""
+

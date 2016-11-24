@@ -690,10 +690,10 @@ class Board:
                 if self.board_rows[king_coord[1]][1] is None \
                         and self.board_rows[king_coord[1]][2] is None \
                         and self.board_rows[king_coord[1]][3] is None:
-                    self.move_piece(((king_coord),(3, king_coord[1])))
+                    self.move_piece(((king_coord), (3, king_coord[1]), None))
                     if not self.is_in_check(side):
                         castle_move_list.append(("000", king_coord, (2, king_coord[1]), (0, king_coord[1]), (3, king_coord[1])))
-                    self.unmove_piece(((king_coord),(3, king_coord[1])))
+                    self.unmove_piece(((king_coord), (3, king_coord[1]), None))
                         
             if self.board_rows[king_coord[1]][7] is not None \
                     and type(self.board_rows[king_coord[1]][7]) == Rook \
@@ -702,10 +702,10 @@ class Board:
                         
                 if self.board_rows[king_coord[1]][5] is None \
                         and self.board_rows[king_coord[1]][6] is None:
-                    self.move_piece(((king_coord),(5, king_coord[1])))
+                    self.move_piece(((king_coord),(5, king_coord[1]), None))
                     if not self.is_in_check(side):
                         castle_move_list.append(("00", king_coord, (6, king_coord[1]), (7, king_coord[1]), (5, king_coord[1])))
-                    self.unmove_piece(((king_coord),(5, king_coord[1])))
+                    self.unmove_piece(((king_coord),(5, king_coord[1]), None))
 
         return castle_move_list
 
