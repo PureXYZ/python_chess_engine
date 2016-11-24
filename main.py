@@ -19,6 +19,8 @@ cProfile.run('game.make_computer_move(side_to_move)', 'myFunction.profile')
 import pstats
 stats = pstats.Stats('myFunction.profile')
 stats.strip_dirs().sort_stats('time').print_stats()
+
+
 """
 while True:
     
@@ -30,13 +32,11 @@ while True:
     else:
         ep = []
     
-    if len(current_board.find_all_legal_moves(side_to_move, ep)) == 0 and \
-            current_board.is_in_check(side_to_move):
+    if len(current_board.find_all_legal_moves(side_to_move, ep)) == 0 and current_board.is_in_check(side_to_move):
         ChessIO().checkmate(side_to_move)
         break
         
-    if len(current_board.find_all_legal_moves(side_to_move, ep)) == 0 and not \
-            current_board.is_in_check(side_to_move):
+    if len(current_board.find_all_legal_moves(side_to_move, ep)) == 0 and not current_board.is_in_check(side_to_move):
         ChessIO().stalemate(side_to_move)
         break
     
@@ -61,4 +61,5 @@ while True:
     side_to_move = not side_to_move
     
     game.board_history[0][0].print_board_debug()
+
 

@@ -131,7 +131,7 @@ class Algorithm:
         analyzed_points = []
         for move in possible_moves:
             copy_board.move_piece(move)
-            points = self.negamax(not side, copy_board, move, depth) #float("-inf"), float("inf"
+            points = self.alphabeta(not side, copy_board, move, depth, float("-inf"), float("inf"))
             copy_board.unmove_piece(move)
             analyzed_moves.append((move, points))
             analyzed_points.append(points)
