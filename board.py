@@ -775,6 +775,18 @@ class Board:
             self.unmove_piece(move)
 
         return check_free_moves
+
+    def sort_moves(self, moves, side):
+
+        move_points = []
+        for move in moves:
+            self.move_piece(move)
+            move_points.append((move, self.evaluate_points(side, [])))
+            self.unmove_piece(move)
+
+        move_points.sort(key=lambda tup: tup[1], reverse=True)
+
+        return [x[0] for x in move_points]
     
     def evaluate_points(self, side, ep):
         sum_points = 0.0
@@ -782,13 +794,19 @@ class Board:
             for column in range(self.CONST_BOARD_COLUMNS):
                 if self.board_rows[row][column] is None:
                     continue
-                elif self.board_rows[row][column].is_white == side:
-                    sum_points += self.board_rows[row][column].value
-                elif self.board_rows[row][column].is_white != side:
-                    sum_points -= self.board_rows[row][column].value
+                if side:
+                    if self.board_rows[row][column].is_white:
+                        sum_points += self.board_rows[row][column].value
+                    else:
+                        sum_points -= self.board_rows[row][column].value
+                else:
+                    if self.board_rows[row][column].is_white:
+                        sum_points -= self.board_rows[row][column].value
+                    else:
+                        sum_points += self.board_rows[row][column].value
 
-        sum_points += 0.1 * len(self.find_all_legal_moves(side, ep))
-        sum_points -= 0.1 * len(self.find_all_legal_moves(not side, ep))
+        #sum_points += 0.1 * len(self.find_all_legal_moves(side, ep))
+        #sum_points -= 0.1 * len(self.find_all_legal_moves(not side, ep))
 
         if side:
             if self.WHITE_CASTLED:

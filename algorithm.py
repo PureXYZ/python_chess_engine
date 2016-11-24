@@ -94,7 +94,28 @@ class Algorithm:
                 max_points = x
         
         return max_points
-            
+
+    def alphabeta(self, side, board, last_move, depth, alpha, beta):
+        if last_move is not None:
+            en_passant_moves = self.en_passant_move(side, board, last_move)
+        else:
+            en_passant_moves = []
+
+        possible_moves = board.find_all_legal_moves(side, en_passant_moves)
+        possible_moves = board.sort_moves(possible_moves, side)
+        if depth == 0:
+            return board.evaluate_points(side, en_passant_moves)
+
+        for move in possible_moves:
+            board.move_piece(move)
+            x = -self.alphabeta(not side, board, move, depth - 1, alpha, beta)
+            board.unmove_piece(move)
+            if x >= beta:
+                return beta
+            if x > alpha:
+                alpha = x
+
+        return alpha
     
     def make_computer_move(self, side):
         copy_board = copy.deepcopy(self.board_history[0][0])
@@ -103,14 +124,14 @@ class Algorithm:
             copy_board_ep = self.en_passant_move(side, copy_board, last_move)
         else:
             copy_board_ep = []
-        depth = 1
+        depth = 2
         possible_moves = copy_board.find_all_legal_moves(side, copy_board_ep)
         
         analyzed_moves = []
         analyzed_points = []
         for move in possible_moves:
             copy_board.move_piece(move)
-            points = self.negamax(not side, copy_board, move, depth)
+            points = self.negamax(not side, copy_board, move, depth) #float("-inf"), float("inf"
             copy_board.unmove_piece(move)
             analyzed_moves.append((move, points))
             analyzed_points.append(points)

@@ -79,7 +79,7 @@ class ChessIO:
             print("Black loses")
             
             
-    def checkmate(self, side_to_move):
+    def stalemate(self, side_to_move):
         print("Stalemate")
             
             
